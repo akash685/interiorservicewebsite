@@ -31,6 +31,7 @@ const packages = [
 ];
 
 const phoneNumber = '919511641912';
+const whatsappMessage = encodeURIComponent('Hi! I am interested in your interior design packages. Could you please provide more details?');
 
 export default function InteriorPackages() {
   return (
@@ -90,7 +91,7 @@ export default function InteriorPackages() {
                     </a>
                     
                     <a 
-                      href={`https://wa.me/${phoneNumber}`}
+                      href={`https://wa.me/${phoneNumber}?text=${whatsappMessage}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="flex items-center justify-center gap-2 w-full border border-gray-300 text-gray-700 py-3 px-4 font-medium hover:border-gray-400 transition-colors"
@@ -150,7 +151,7 @@ export default function InteriorPackages() {
                   </a>
                   
                   <a 
-                    href={`https://wa.me/${phoneNumber}`}
+                    href={`https://wa.me/${phoneNumber}?text=${whatsappMessage}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center justify-center gap-2 w-full border border-gray-300 text-gray-700 py-3 px-4 font-medium hover:border-gray-400 transition-colors"
