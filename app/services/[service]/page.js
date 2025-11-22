@@ -68,11 +68,11 @@ function formatDescription(description) {
     if (trimmedLine.startsWith('### ')) {
       elements.push(
         <h3 key={index} style={{
-          fontSize: '1.25rem',
+          fontSize: '1.125rem',
           fontWeight: '600',
           color: 'var(--text-dark)',
-          marginTop: '2rem',
-          marginBottom: '1rem'
+          marginTop: '1.5rem',
+          marginBottom: '0.75rem'
         }}>
           {trimmedLine.replace('### ', '')}
         </h3>
@@ -80,11 +80,11 @@ function formatDescription(description) {
     } else if (trimmedLine.startsWith('## ')) {
       elements.push(
         <h2 key={index} style={{
-          fontSize: '1.5rem',
+          fontSize: '1.25rem',
           fontWeight: '600',
           color: 'var(--text-dark)',
-          marginTop: '2.5rem',
-          marginBottom: '1.25rem'
+          marginTop: '2rem',
+          marginBottom: '1rem'
         }}>
           {trimmedLine.replace('## ', '')}
         </h2>
@@ -92,11 +92,11 @@ function formatDescription(description) {
     } else if (trimmedLine.startsWith('# ')) {
       elements.push(
         <h1 key={index} style={{
-          fontSize: '2rem',
+          fontSize: '1.5rem',
           fontWeight: '700',
           color: 'var(--text-dark)',
-          marginTop: '3rem',
-          marginBottom: '1.5rem'
+          marginTop: '2rem',
+          marginBottom: '1rem'
         }}>
           {trimmedLine.replace('# ', '')}
         </h1>
@@ -108,8 +108,8 @@ function formatDescription(description) {
       elements.push(
         <li key={index} style={{
           color: 'var(--text-light)',
-          fontSize: '1rem',
-          lineHeight: '1.8',
+          fontSize: '0.875rem',
+          lineHeight: '1.6',
           marginBottom: '0.5rem'
         }}>
           {content}
@@ -123,12 +123,14 @@ function formatDescription(description) {
         .replace(/\*\*(.*?)\*\*/g, '<strong style="font-weight: 600; color: var(--text-dark)">$1</strong>');
       
       elements.push(
-        <p key={index} style={{
-          color: 'var(--text-light)',
-          fontSize: '1rem',
-          lineHeight: '1.8',
-          marginBottom: '1rem'
-        }} dangerouslySetInnerHTML={{ __html: formatted }} />
+        <p key={index} 
+           style={{
+             color: 'var(--text-light)',
+             fontSize: '0.875rem',
+             lineHeight: '1.6',
+             marginBottom: '1rem'
+           }}
+           dangerouslySetInnerHTML={{ __html: formatted }} />
       );
     }
     // Regular paragraph
@@ -136,8 +138,8 @@ function formatDescription(description) {
       elements.push(
         <p key={index} style={{
           color: 'var(--text-light)',
-          fontSize: '1rem',
-          lineHeight: '1.8',
+          fontSize: '0.875rem',
+          lineHeight: '1.6',
           marginBottom: '1rem'
         }}>
           {trimmedLine}
@@ -288,7 +290,7 @@ export default async function ServicePage({ params, searchParams }) {
   };
 
   return (
-    <div style={{ 
+    <div style={{
       backgroundColor: 'var(--background)',
       minHeight: '100vh'
     }}>
@@ -309,7 +311,7 @@ export default async function ServicePage({ params, searchParams }) {
       <section style={{ position: 'relative' }}>
         {/* Full Width Hero Image with Title Overlay */}
         {service.image && (
-          <div className="relative w-full h-[500px] overflow-hidden">
+          <div className="relative w-full h-64 md:h-80 lg:h-96 xl:h-[500px] overflow-hidden">
             <img 
               src={service.image} 
               alt={service.name}
@@ -322,7 +324,7 @@ export default async function ServicePage({ params, searchParams }) {
             <div className="absolute inset-0 flex items-center">
               <div className="content-container w-full">
                 {/* Breadcrumb */}
-                <nav className="flex items-center gap-2 text-sm mb-6 text-white/90">
+                <nav className="flex items-center gap-2 text-sm mb-4 md:mb-6 text-white/90">
                   <Link href="/" className="hover:underline">Home</Link>
                   <span>/</span>
                   <Link href="/services" className="hover:underline">Services</Link>
@@ -331,22 +333,22 @@ export default async function ServicePage({ params, searchParams }) {
                 </nav>
 
                 {/* Title */}
-                <h1 className="text-5xl font-bold mb-4 tracking-tight text-white">
+                <h1 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold mb-3 md:mb-4 tracking-tight text-white">
                   {service.name}{locationParam && ` in ${locationParam}`}
                 </h1>
-                <p className="text-xl mb-6 text-white/90">
+                <p className="text-lg md:text-xl mb-4 md:mb-6 text-white/90">
                   Professional interior design services
                 </p>
 
                 {/* Meta Tags */}
-                <div className="flex flex-wrap gap-3">
+                <div className="flex flex-wrap gap-2 md:gap-3">
                   {service.serviceType && (
-                    <span className="px-4 py-2 text-sm font-medium bg-white/95 text-gray-900 backdrop-blur-sm">
+                    <span className="px-3 md:px-4 py-2 text-xs md:text-sm font-medium bg-white/95 text-gray-900 backdrop-blur-sm rounded-full">
                       {service.serviceType}
                     </span>
                   )}
                   {service.priceRange && (
-                    <span className="px-4 py-2 text-sm font-medium bg-white/95 text-gray-900 backdrop-blur-sm">
+                    <span className="px-3 md:px-4 py-2 text-xs md:text-sm font-medium bg-white/95 text-gray-900 backdrop-blur-sm rounded-full">
                       Free consultation
                     </span>
                   )}
@@ -359,9 +361,9 @@ export default async function ServicePage({ params, searchParams }) {
         {/* Title Section when no image */}
         {!service.image && (
           <div style={{ backgroundColor: 'var(--surface)', borderBottom: '1px solid var(--border)' }}>
-            <div className="content-container py-16">
+            <div className="content-container py-8 md:py-16">
               {/* Breadcrumb */}
-              <nav className="flex items-center gap-2 text-sm mb-8" style={{ color: 'var(--text-light)' }}>
+              <nav className="flex items-center gap-2 text-sm mb-4 md:mb-8" style={{ color: 'var(--text-light)' }}>
                 <Link href="/" className="hover:underline">Home</Link>
                 <span>/</span>
                 <Link href="/services" className="hover:underline">Services</Link>
@@ -370,17 +372,17 @@ export default async function ServicePage({ params, searchParams }) {
               </nav>
 
               {/* Title */}
-              <h1 className="text-5xl font-bold mb-4 tracking-tight" style={{ color: 'var(--text-dark)' }}>
+              <h1 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold mb-3 md:mb-4 tracking-tight" style={{ color: 'var(--text-dark)' }}>
                 {service.name}{locationParam && ` in ${locationParam}`}
               </h1>
-              <p className="text-xl mb-6" style={{ color: 'var(--text-medium)' }}>
+              <p className="text-lg md:text-xl mb-4 md:mb-6" style={{ color: 'var(--text-medium)' }}>
                 Professional interior design services
               </p>
               
               {/* Service Meta Tags */}
-              <div className="flex flex-wrap gap-3">
+              <div className="flex flex-wrap gap-2 md:gap-3">
                 {service.serviceType && (
-                  <span className="px-4 py-2 text-sm font-medium border" style={{
+                  <span className="px-3 md:px-4 py-2 text-xs md:text-sm font-medium border rounded-full" style={{
                     backgroundColor: 'var(--background)',
                     borderColor: 'var(--border)',
                     color: 'var(--text-medium)'
@@ -389,7 +391,7 @@ export default async function ServicePage({ params, searchParams }) {
                   </span>
                 )}
                 {service.priceRange && (
-                  <span className="px-4 py-2 text-sm font-medium border" style={{
+                  <span className="px-3 md:px-4 py-2 text-xs md:text-sm font-medium border rounded-full" style={{
                     backgroundColor: 'var(--background)',
                     borderColor: 'var(--border)',
                     color: 'var(--text-medium)'
@@ -403,23 +405,268 @@ export default async function ServicePage({ params, searchParams }) {
         )}
       </section>
 
-      {/* Main Content with Sidebar Layout */}
-      <div className="content-container" style={{ padding: '2rem 0 4rem' }}>
+      {/* Main Content */}
+      <div className="content-container py-6 md:py-8 lg:py-12">
         <div style={{ 
-          maxWidth: '1200px',
-          margin: '0 auto',
           display: 'grid',
-          gridTemplateColumns: '1fr 350px',
-          gap: '2rem',
+          gridTemplateColumns: '1fr',
+          gap: '1.5rem md:2rem',
           alignItems: 'start'
         }}>
           
-          {/* Left Column - Main Content */}
-          <div>
-            {/* Description Section with Markdown Formatting */}
-            {service.description && (
-              <section style={{ marginBottom: '3rem' }}>
-                <div style={{ 
+          {/* Mobile: Stack layout - main content first, then contact form */}
+          <div className="lg:hidden">
+            {/* Main Content */}
+            <div className="space-y-6 md:space-y-8">
+              {/* Description Section */}
+              {service.description && (
+                <div style={{
+                  backgroundColor: 'var(--surface)',
+                  border: `1px solid var(--border)`,
+                  borderRadius: '0.5rem',
+                  padding: '1.5rem md:2rem'
+                }}>
+                  <div style={{ 
+                    color: 'var(--text-light)',
+                    lineHeight: '1.6'
+                  }}>
+                    {formatDescription(service.description)}
+                  </div>
+                </div>
+              )}
+
+              {/* Packages Section */}
+              {service.offers && service.offers.length > 0 && (
+                <div>
+                  <h2 style={{
+                    fontSize: '1.25rem md:text-xl',
+                    fontWeight: '600',
+                    color: 'var(--text-dark)',
+                    marginBottom: '1rem md:1.5rem'
+                  }}>
+                    Packages
+                  </h2>
+                  <div style={{ 
+                    display: 'grid',
+                    gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+                    gap: '1rem md:1.5rem'
+                  }}>
+                    {service.offers.map((offer, index) => (
+                      <div 
+                        key={index}
+                        style={{
+                          backgroundColor: 'var(--surface)',
+                          border: `1px solid var(--border)`,
+                          borderRadius: '0.5rem',
+                          padding: '1.5rem md:2rem'
+                        }}
+                      >
+                        <h3 style={{
+                          fontSize: '1rem md:text-lg',
+                          fontWeight: '500',
+                          color: 'var(--text-dark)',
+                          marginBottom: '0.5rem'
+                        }}>
+                          {offer.name}
+                        </h3>
+                        <div style={{
+                          fontSize: '1.125rem md:text-xl',
+                          fontWeight: '600',
+                          color: 'var(--primary)',
+                          marginBottom: '0.75rem'
+                        }}>
+                          {offer.price}
+                        </div>
+                        <p style={{
+                          color: 'var(--text-light)',
+                          fontSize: '0.875rem md:text-base',
+                          lineHeight: '1.5'
+                        }}>
+                          {offer.description}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Reviews Section */}
+              {service.reviews && service.reviews.length > 0 && (
+                <div>
+                  <h2 style={{
+                    fontSize: '1.25rem md:text-xl',
+                    fontWeight: '600',
+                    color: 'var(--text-dark)',
+                    marginBottom: '1rem md:1.5rem'
+                  }}>
+                    Reviews
+                  </h2>
+                  <div style={{ 
+                    display: 'grid', 
+                    gap: '1rem md:1.5rem'
+                  }}>
+                    {service.reviews.slice(0, 3).map((review, index) => (
+                      <div 
+                        key={index}
+                        style={{
+                          backgroundColor: 'var(--surface)',
+                          border: `1px solid var(--border)`,
+                          borderRadius: '0.5rem',
+                          padding: '1rem md:1.5rem'
+                        }}
+                      >
+                        <div style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                          marginBottom: '0.5rem'
+                        }}>
+                          <div style={{
+                            fontSize: '0.875rem md:text-base',
+                            fontWeight: '500',
+                            color: 'var(--text-dark)'
+                          }}>
+                            {review.author}
+                          </div>
+                          <div style={{
+                            color: '#fbbf24',
+                            fontSize: '0.75rem'
+                          }}>
+                            {'⭐'.repeat(parseInt(review.ratingValue) || 5)}
+                          </div>
+                        </div>
+                        <p style={{
+                          color: 'var(--text-light)',
+                          fontSize: '0.875rem md:text-base',
+                          fontStyle: 'italic'
+                        }}>
+                          "{review.reviewBody}"
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* FAQ Section */}
+              {service.faqs && service.faqs.length > 0 && (
+                <div>
+                  <h2 style={{
+                    fontSize: '1.25rem md:text-xl',
+                    fontWeight: '600',
+                    color: 'var(--text-dark)',
+                    marginBottom: '1rem md:1.5rem'
+                  }}>
+                    Questions
+                  </h2>
+                  <div style={{ 
+                    display: 'grid', 
+                    gap: '0.75rem md:1rem'
+                  }}>
+                    {service.faqs.slice(0, 4).map((faq, index) => (
+                      <details 
+                        key={index}
+                        style={{
+                          backgroundColor: 'var(--surface)',
+                          border: `1px solid var(--border)`,
+                          borderRadius: '0.5rem',
+                          padding: '1rem md:1.5rem'
+                        }}
+                      >
+                        <summary style={{ 
+                          fontWeight: '500',
+                          cursor: 'pointer',
+                          color: 'var(--text-dark)',
+                          fontSize: '0.875rem md:text-base',
+                          outline: 'none',
+                          listStyle: 'none',
+                          margin: 0
+                        }}>
+                          {faq.question}
+                        </summary>
+                        <p style={{
+                          color: 'var(--text-light)',
+                          fontSize: '0.875rem md:text-base',
+                          lineHeight: '1.5',
+                          marginTop: '0.75rem',
+                          marginBottom: 0
+                        }}>
+                          {faq.answer}
+                        </p>
+                      </details>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Tags Section */}
+              {service.keywords && service.keywords.length > 0 && (
+                <div>
+                  <h2 style={{
+                    fontSize: '1.25rem md:text-xl',
+                    fontWeight: '600',
+                    color: 'var(--text-dark)',
+                    marginBottom: '1rem md:1.5rem'
+                  }}>
+                    Tags
+                  </h2>
+                  <div style={{ 
+                    display: 'flex', 
+                    flexWrap: 'wrap', 
+                    gap: '0.5rem'
+                  }}>
+                    {service.keywords.slice(0, 8).map((keyword, index) => (
+                      <span 
+                        key={index}
+                        style={{
+                          backgroundColor: 'var(--surface)',
+                          color: 'var(--text-medium)',
+                          padding: '0.25rem 0.5rem',
+                          fontSize: '0.625rem md:text-sm',
+                          fontWeight: '400',
+                          borderRadius: '0.25rem',
+                          border: `1px solid var(--border)`
+                        }}
+                      >
+                        {keyword}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Contact Form */}
+            <div style={{
+              backgroundColor: 'var(--surface)',
+              border: `1px solid var(--border)`,
+              borderRadius: '0.5rem',
+              padding: '1.5rem md:2rem',
+              marginTop: '2rem'
+            }}>
+              <h3 style={{
+                fontSize: '1rem md:text-lg',
+                fontWeight: '500',
+                color: 'var(--text-dark)',
+                marginBottom: '1rem md:1.5rem',
+                textAlign: 'center'
+              }}>
+                Get Quote
+              </h3>
+              <ContactForm service={service.name} context={`Book ${service.name}`} />
+            </div>
+          </div>
+
+          {/* Desktop: Sidebar layout */}
+          <div className="hidden lg:grid" style={{ 
+            gridTemplateColumns: '1fr 350px',
+            gap: '2rem'
+          }}>
+            {/* Left Column - Main Content */}
+            <div className="space-y-6 md:space-y-8">
+              {/* Same content sections as above */}
+              {service.description && (
+                <div style={{
                   backgroundColor: 'var(--surface)',
                   border: `1px solid var(--border)`,
                   borderRadius: '0.5rem',
@@ -427,228 +674,231 @@ export default async function ServicePage({ params, searchParams }) {
                 }}>
                   <div style={{ 
                     color: 'var(--text-light)',
-                    lineHeight: '1.8'
+                    lineHeight: '1.6'
                   }}>
                     {formatDescription(service.description)}
                   </div>
                 </div>
-              </section>
-            )}
+              )}
 
-            {/* Offers/Packages Section */}
-            {service.offers && service.offers.length > 0 && (
-              <section style={{ marginBottom: '3rem' }}>
-                <h2 style={{
-                  fontSize: '1.25rem',
-                  fontWeight: '500',
-                  color: 'var(--text-dark)',
-                  marginBottom: '1.5rem'
-                }}>
-                  Packages
-                </h2>
-                <div style={{ 
-                  display: 'grid', 
-                  gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-                  gap: '1rem'
-                }}>
-                  {service.offers.map((offer, index) => (
-                    <div 
-                      key={index}
-                      style={{
-                        backgroundColor: 'var(--surface)',
-                        border: `1px solid var(--border)`,
-                        borderRadius: '0.375rem',
-                        padding: '1.5rem'
-                      }}
-                    >
-                      <h3 style={{
-                        fontSize: '1rem',
-                        fontWeight: '500',
-                        color: 'var(--text-dark)',
-                        marginBottom: '0.5rem'
-                      }}>
-                        {offer.name}
-                      </h3>
-                      <div style={{
-                        fontSize: '1.125rem',
-                        fontWeight: '500',
-                        color: 'var(--primary)',
-                        marginBottom: '0.75rem'
-                      }}>
-                        {offer.price}
+              {/* Other sections similar to mobile but with desktop styling */}
+              {service.offers && service.offers.length > 0 && (
+                <div>
+                  <h2 style={{
+                    fontSize: '1.25rem',
+                    fontWeight: '600',
+                    color: 'var(--text-dark)',
+                    marginBottom: '1.5rem'
+                  }}>
+                    Packages
+                  </h2>
+                  <div style={{ 
+                    display: 'grid',
+                    gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+                    gap: '1.5rem'
+                  }}>
+                    {service.offers.map((offer, index) => (
+                      <div 
+                        key={index}
+                        style={{
+                          backgroundColor: 'var(--surface)',
+                          border: `1px solid var(--border)`,
+                          borderRadius: '0.5rem',
+                          padding: '1.5rem'
+                        }}
+                      >
+                        <h3 style={{
+                          fontSize: '1rem',
+                          fontWeight: '500',
+                          color: 'var(--text-dark)',
+                          marginBottom: '0.5rem'
+                        }}>
+                          {offer.name}
+                        </h3>
+                        <div style={{
+                          fontSize: '1.125rem',
+                          fontWeight: '600',
+                          color: 'var(--primary)',
+                          marginBottom: '0.75rem'
+                        }}>
+                          {offer.price}
+                        </div>
+                        <p style={{
+                          color: 'var(--text-light)',
+                          fontSize: '0.875rem',
+                          lineHeight: '1.5'
+                        }}>
+                          {offer.description}
+                        </p>
                       </div>
-                      <p style={{
-                        color: 'var(--text-light)',
-                        fontSize: '0.875rem',
-                        lineHeight: '1.5'
-                      }}>
-                        {offer.description}
-                      </p>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
-              </section>
-            )}
+              )}
 
-            {/* Reviews Section */}
-            {service.reviews && service.reviews.length > 0 && (
-              <section style={{ marginBottom: '3rem' }}>
-                <h2 style={{
-                  fontSize: '1.25rem',
-                  fontWeight: '500',
-                  color: 'var(--text-dark)',
-                  marginBottom: '1.5rem'
-                }}>
-                  Reviews
-                </h2>
-                <div style={{ 
-                  display: 'grid', 
-                  gap: '0.75rem'
-                }}>
-                  {service.reviews.slice(0, 3).map((review, index) => (
-                    <div 
-                      key={index}
-                      style={{
-                        backgroundColor: 'var(--surface)',
-                        border: `1px solid var(--border)`,
-                        borderRadius: '0.375rem',
-                        padding: '1rem'
-                      }}
-                    >
-                      <div style={{
-                        fontSize: '0.875rem',
-                        fontWeight: '500',
-                        color: 'var(--text-dark)',
-                        marginBottom: '0.5rem'
-                      }}>
-                        {review.author}
+              {/* Reviews, FAQ, Tags sections with desktop styling */}
+              {service.reviews && service.reviews.length > 0 && (
+                <div>
+                  <h2 style={{
+                    fontSize: '1.25rem',
+                    fontWeight: '600',
+                    color: 'var(--text-dark)',
+                    marginBottom: '1.5rem'
+                  }}>
+                    Reviews
+                  </h2>
+                  <div style={{ 
+                    display: 'grid', 
+                    gap: '1rem'
+                  }}>
+                    {service.reviews.slice(0, 3).map((review, index) => (
+                      <div 
+                        key={index}
+                        style={{
+                          backgroundColor: 'var(--surface)',
+                          border: `1px solid var(--border)`,
+                          borderRadius: '0.5rem',
+                          padding: '1.5rem'
+                        }}
+                      >
+                        <div style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                          marginBottom: '0.5rem'
+                        }}>
+                          <div style={{
+                            fontSize: '0.875rem',
+                            fontWeight: '500',
+                            color: 'var(--text-dark)'
+                          }}>
+                            {review.author}
+                          </div>
+                          <div style={{
+                            color: '#fbbf24',
+                            fontSize: '0.75rem'
+                          }}>
+                            {'⭐'.repeat(parseInt(review.ratingValue) || 5)}
+                          </div>
+                        </div>
+                        <p style={{
+                          color: 'var(--text-light)',
+                          fontSize: '0.875rem',
+                          fontStyle: 'italic'
+                        }}>
+                          "{review.reviewBody}"
+                        </p>
                       </div>
-                      <div style={{
-                        color: '#fbbf24',
-                        fontSize: '0.75rem',
-                        marginBottom: '0.5rem'
-                      }}>
-                        {'⭐'.repeat(parseInt(review.ratingValue) || 5)}
-                      </div>
-                      <p style={{
-                        color: 'var(--text-light)',
-                        fontSize: '0.75rem',
-                        fontStyle: 'italic'
-                      }}>
-                        "{review.reviewBody}"
-                      </p>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
-              </section>
-            )}
+              )}
 
-            {/* FAQ Section */}
-            {service.faqs && service.faqs.length > 0 && (
-              <section style={{ marginBottom: '3rem' }}>
-                <h2 style={{
-                  fontSize: '1.25rem',
-                  fontWeight: '500',
-                  color: 'var(--text-dark)',
-                  marginBottom: '1.5rem'
-                }}>
-                  Questions
-                </h2>
-                <div style={{ 
-                  display: 'grid', 
-                  gap: '0.5rem'
-                }}>
-                  {service.faqs.slice(0, 4).map((faq, index) => (
-                    <details 
-                      key={index}
-                      style={{
-                        backgroundColor: 'var(--surface)',
-                        border: `1px solid var(--border)`,
-                        borderRadius: '0.375rem',
-                        padding: '1rem'
-                      }}
-                    >
-                      <summary style={{ 
-                        fontWeight: '500',
-                        cursor: 'pointer',
-                        color: 'var(--text-dark)',
-                        fontSize: '0.875rem',
-                        outline: 'none',
-                        listStyle: 'none',
-                        margin: 0
-                      }}>
-                        {faq.question}
-                      </summary>
-                      <p style={{
-                        color: 'var(--text-light)',
-                        fontSize: '0.75rem',
-                        lineHeight: '1.5',
-                        marginTop: '0.5rem',
-                        marginBottom: 0
-                      }}>
-                        {faq.answer}
-                      </p>
-                    </details>
-                  ))}
+              {service.faqs && service.faqs.length > 0 && (
+                <div>
+                  <h2 style={{
+                    fontSize: '1.25rem',
+                    fontWeight: '600',
+                    color: 'var(--text-dark)',
+                    marginBottom: '1.5rem'
+                  }}>
+                    Questions
+                  </h2>
+                  <div style={{ 
+                    display: 'grid', 
+                    gap: '1rem'
+                  }}>
+                    {service.faqs.slice(0, 4).map((faq, index) => (
+                      <details 
+                        key={index}
+                        style={{
+                          backgroundColor: 'var(--surface)',
+                          border: `1px solid var(--border)`,
+                          borderRadius: '0.5rem',
+                          padding: '1.5rem'
+                        }}
+                      >
+                        <summary style={{ 
+                          fontWeight: '500',
+                          cursor: 'pointer',
+                          color: 'var(--text-dark)',
+                          fontSize: '0.875rem',
+                          outline: 'none',
+                          listStyle: 'none',
+                          margin: 0
+                        }}>
+                          {faq.question}
+                        </summary>
+                        <p style={{
+                          color: 'var(--text-light)',
+                          fontSize: '0.875rem',
+                          lineHeight: '1.5',
+                          marginTop: '0.75rem',
+                          marginBottom: 0
+                        }}>
+                          {faq.answer}
+                        </p>
+                      </details>
+                    ))}
+                  </div>
                 </div>
-              </section>
-            )}
+              )}
 
-            {/* Service Keywords */}
-            {service.keywords && service.keywords.length > 0 && (
-              <section style={{ marginBottom: '3rem' }}>
-                <h2 style={{
-                  fontSize: '1.25rem',
-                  fontWeight: '500',
-                  color: 'var(--text-dark)',
-                  marginBottom: '1rem'
-                }}>
-                  Tags
-                </h2>
-                <div style={{ 
-                  display: 'flex', 
-                  flexWrap: 'wrap', 
-                  gap: '0.5rem'
-                }}>
-                  {service.keywords.slice(0, 8).map((keyword, index) => (
-                    <span 
-                      key={index}
-                      style={{
-                        backgroundColor: 'var(--surface)',
-                        color: 'var(--text-medium)',
-                        padding: '0.25rem 0.5rem',
-                        fontSize: '0.625rem',
-                        fontWeight: '400',
-                        borderRadius: '0.25rem',
-                        border: `1px solid var(--border)`
-                      }}
-                    >
-                      {keyword}
-                    </span>
-                  ))}
+              {service.keywords && service.keywords.length > 0 && (
+                <div>
+                  <h2 style={{
+                    fontSize: '1.25rem',
+                    fontWeight: '600',
+                    color: 'var(--text-dark)',
+                    marginBottom: '1rem'
+                  }}>
+                    Tags
+                  </h2>
+                  <div style={{ 
+                    display: 'flex', 
+                    flexWrap: 'wrap', 
+                    gap: '0.5rem'
+                  }}>
+                    {service.keywords.slice(0, 8).map((keyword, index) => (
+                      <span 
+                        key={index}
+                        style={{
+                          backgroundColor: 'var(--surface)',
+                          color: 'var(--text-medium)',
+                          padding: '0.25rem 0.5rem',
+                          fontSize: '0.625rem',
+                          fontWeight: '400',
+                          borderRadius: '0.25rem',
+                          border: `1px solid var(--border)`
+                        }}
+                      >
+                        {keyword}
+                      </span>
+                    ))}
+                  </div>
                 </div>
-              </section>
-            )}
-          </div>
+              )}
+            </div>
 
-          {/* Right Column - Sticky Contact Form */}
-          <div style={{ position: 'sticky', top: '100px' }}>
-            <div style={{
-              backgroundColor: 'var(--surface)',
-              border: `1px solid var(--border)`,
-              borderRadius: '0.5rem',
-              padding: '2rem'
-            }}>
-              <h3 style={{
-                fontSize: '1rem',
-                fontWeight: '500',
-                color: 'var(--text-dark)',
-                marginBottom: '1rem',
-                textAlign: 'center'
+            {/* Right Column - Sticky Contact Form */}
+            <div style={{ position: 'sticky', top: '100px' }}>
+              <div style={{
+                backgroundColor: 'var(--surface)',
+                border: `1px solid var(--border)`,
+                borderRadius: '0.5rem',
+                padding: '2rem'
               }}>
-                Get Quote
-              </h3>
-              <ContactForm service={service.name} context={`Book ${service.name}`} />
+                <h3 style={{
+                  fontSize: '1rem',
+                  fontWeight: '500',
+                  color: 'var(--text-dark)',
+                  marginBottom: '1rem',
+                  textAlign: 'center'
+                }}>
+                  Get Quote
+                </h3>
+                <ContactForm service={service.name} context={`Book ${service.name}`} />
+              </div>
             </div>
           </div>
         </div>
