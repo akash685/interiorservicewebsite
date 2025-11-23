@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import ContactForm from '@/components/ContactForm';
+import Breadcrumb from '@/components/Breadcrumb';
 import dbConnect from '@/lib/db';
 import Location from '@/models/Location';
 import Service from '@/models/Service';
@@ -207,51 +208,85 @@ export default async function SubLocationServicePage({ params }) {
     }))
   } : null;
 
+  // Organization Schema
+  const organizationSchema = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Gupta Furniture & Interior",
+    "url": "https://www.guptafurniturenashik.in",
+    "logo": "https://www.guptafurniturenashik.in/logo.png",
+    "description": "Professional furniture and interior design services",
+    "telephone": "+91 9511641912",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": `${sublocationName}, ${location.name}`,
+      "addressRegion": "Maharashtra",
+      "addressCountry": "IN"
+    }
+  };
+
+  // WebSite SearchAction Schema
+  const websiteSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "url": "https://www.guptafurniturenashik.in",
+    "name": "Gupta Furniture & Interior",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": {
+        "@type": "EntryPoint",
+        "urlTemplate": "https://www.guptafurniturenashik.in/services?q={search_term_string}"
+      },
+      "query-input": "required name=search_term_string"
+    }
+  };
+
   return (
-    <div style={{ backgroundColor: 'var(--background)', minHeight: '100vh' }}>
+    <div className="min-h-screen bg-gray-50">
       {/* Service Schema */}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }} />
       {/* Breadcrumb Schema */}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       {/* FAQ Schema (if exists) */}
       {faqSchema && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />}
+      {/* Organization Schema */}
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }} />
+      {/* WebSite SearchAction Schema */}
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }} />
+      
+      <Breadcrumb items={[
+        { name: 'Home', url: '/' },
+        { name: 'Locations', url: '/locations' },
+        { name: location.name, url: `/locations/${locationSlug}` },
+        { name: sublocationName, url: `/locations/${locationSlug}/${paramSlug}` },
+        { name: service.name, url: `/locations/${locationSlug}/${paramSlug}/${serviceSlug}` }
+      ]} />
       
       {/* Hero Section with Full Width Image */}
-      <section style={{ backgroundColor: 'var(--background)', position: 'relative' }}>
+      <section className="relative bg-gray-50">
         {service.image && (
-          <div style={{ width: '100%', height: '500px', overflow: 'hidden', backgroundColor: 'var(--surface)', position: 'relative' }}>
+          <div className="relative w-full h-64 md:h-80 lg:h-96 overflow-hidden bg-gray-100">
             <img 
               src={service.image} 
               alt={`${service.name} in ${sublocationName}, ${location.name}`}
-              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+              className="w-full h-full object-cover"
             />
             {/* Title Overlay - Centered */}
-            <div style={{ 
-              position: 'absolute', 
-              top: 0,
-              left: 0, 
-              right: 0,
-              bottom: 0,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              background: 'rgba(0,0,0,0.4)',
-              padding: '2rem'
-            }}>
-              <div className="content-container">
-                <div style={{ maxWidth: '800px', margin: '0 auto', textAlign: 'center' }}>
-                  <h1 style={{ fontSize: '3rem', fontWeight: '700', color: '#ffffff', marginBottom: '1.5rem', lineHeight: '1.2', textShadow: '0 2px 8px rgba(0,0,0,0.5)' }}>
+            <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-40 p-8">
+              <div className="max-w-6xl mx-auto px-6 w-full">
+                <div className="max-w-3xl mx-auto text-center">
+                  <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-6 tracking-tight">
                     {service.name} in {sublocationName}
                   </h1>
                   
-                  <div style={{ display: 'flex', justifyContent: 'center', gap: '0.75rem' }}>
+                  <div className="flex justify-center gap-3">
                     {service.serviceType && (
-                      <span style={{ backgroundColor: 'rgba(255,255,255,0.95)', border: '1px solid rgba(255,255,255,0.3)', padding: '0.5rem 1rem', color: 'var(--text-dark)', fontSize: '0.875rem', fontWeight: '500', borderRadius: '0.25rem' }}>
+                      <span className="px-3 py-2 bg-white bg-opacity-90 border border-white border-opacity-30 text-gray-900 text-sm font-medium rounded">
                         {service.serviceType}
                       </span>
                     )}
                     {service.priceRange && (
-                      <span style={{ backgroundColor: 'rgba(255,255,255,0.95)', border: '1px solid rgba(255,255,255,0.3)', padding: '0.5rem 1rem', color: 'var(--text-dark)', fontSize: '0.875rem', fontWeight: '500', borderRadius: '0.25rem' }}>
+                      <span className="px-3 py-2 bg-white bg-opacity-90 border border-white border-opacity-30 text-gray-900 text-sm font-medium rounded">
                         {service.priceRange}
                       </span>
                     )}
@@ -263,20 +298,20 @@ export default async function SubLocationServicePage({ params }) {
         )}
         
         {!service.image && (
-          <div className="content-container" style={{ padding: '3rem 0 2rem' }}>
-            <div style={{ maxWidth: '800px', margin: '0 auto', textAlign: 'center' }}>
-              <h1 style={{ fontSize: '2.5rem', fontWeight: '600', color: 'var(--text-dark)', marginBottom: '1rem', lineHeight: '1.2' }}>
+          <div className="max-w-6xl mx-auto px-6 py-20">
+            <div className="max-w-3xl mx-auto text-center">
+              <h1 className="text-3xl md:text-4xl lg:text-5xl font-semibold text-gray-900 mb-6 tracking-tight">
                 {service.name} in {sublocationName}
               </h1>
               
-              <div style={{ display: 'flex', justifyContent: 'center', gap: '0.75rem', marginBottom: '2rem' }}>
+              <div className="flex justify-center gap-3 mb-8">
                 {service.serviceType && (
-                  <span style={{ backgroundColor: 'var(--surface)', border: '1px solid var(--border)', padding: '0.25rem 0.75rem', color: 'var(--text-medium)', fontSize: '0.75rem', borderRadius: '0.25rem' }}>
+                  <span className="px-3 py-2 bg-white border border-gray-200 text-gray-700 text-sm font-medium rounded">
                     {service.serviceType}
                   </span>
                 )}
                 {service.priceRange && (
-                  <span style={{ backgroundColor: 'var(--surface)', border: '1px solid var(--border)', padding: '0.25rem 0.75rem', color: 'var(--text-medium)', fontSize: '0.75rem', borderRadius: '0.25rem' }}>
+                  <span className="px-3 py-2 bg-white border border-gray-200 text-gray-700 text-sm font-medium rounded">
                     {service.priceRange}
                   </span>
                 )}
@@ -287,11 +322,11 @@ export default async function SubLocationServicePage({ params }) {
       </section>
 
       {/* Main Content with Sidebar Layout */}
-      <div className="content-container" style={{ padding: '2rem 0 4rem' }}>
-        <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'grid', gridTemplateColumns: '1fr 350px', gap: '2rem', alignItems: 'start' }}>
+      <div className="max-w-6xl mx-auto px-6 py-16">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           
           {/* Left Column - Main Content */}
-          <div>
+          <div className="lg:col-span-2">
             {/* Description Section */}
             {service.description && (
               <section style={{ marginBottom: '3rem' }}>
@@ -349,9 +384,9 @@ export default async function SubLocationServicePage({ params }) {
           </div>
 
           {/* Right Column - Sticky Contact Form */}
-          <div style={{ position: 'sticky', top: '100px' }}>
-            <div style={{ backgroundColor: 'var(--surface)', border: '1px solid var(--border)', borderRadius: '0.5rem', padding: '2rem' }}>
-              <h3 style={{ fontSize: '1rem', fontWeight: '500', color: 'var(--text-dark)', marginBottom: '1rem', textAlign: 'center' }}>Get Quote</h3>
+          <div className="lg:col-span-1">
+            <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm sticky top-6">
+              <h3 className="text-lg font-semibold text-gray-900 mb-6 text-center">Get Quote</h3>
               <ContactForm 
                 service={service.name} 
                 location={location.name}
