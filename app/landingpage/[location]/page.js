@@ -213,7 +213,7 @@ export default async function LandingPage({ params }) {
       <section 
         className="min-h-screen flex items-center relative"
         style={{
-          backgroundImage: 'url(/hero.png)',
+          backgroundImage: 'url(https://res.cloudinary.com/dmrxpcalh/image/upload/v1763828170/hero_mldrie.png)',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat'

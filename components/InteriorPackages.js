@@ -7,26 +7,26 @@ const packages = [
     id: 1,
     name: '1 BHK',
     price: '2.5L',
-    image: '/1bhk.png'
+    image: 'https://res.cloudinary.com/dmrxpcalh/image/upload/v1763828169/1bhk_hbgitu.png'
   },
   {
     id: 2,
     name: '2 BHK',
     price: '3.5L',
     popular: true,
-    image: '/2bhk.png'
+    image: 'https://res.cloudinary.com/dmrxpcalh/image/upload/v1763828171/2bhk_ortrlk.png'
   },
   {
     id: 3,
     name: '3 BHK',
     price: '4.5L',
-    image: '/3bhk.png'
+    image: 'https://res.cloudinary.com/dmrxpcalh/image/upload/v1763828169/3bhk_bzzbb1.png'
   },
   {
     id: 4,
     name: '4 BHK',
     price: '5.5L',
-    image: '/4bhk.png'
+    image: 'https://res.cloudinary.com/dmrxpcalh/image/upload/v1763828171/4bhk_mgtorl.png'
   },
 ];
 
@@ -60,6 +60,9 @@ export default function InteriorPackages() {
                     alt={`${pkg.name} Interior Package`}
                     fill
                     className="object-cover"
+                    sizes="280px"
+                    quality={85}
+                    priority={pkg.id <= 2}
                   />
                   {pkg.popular && (
                     <div className="absolute top-4 right-4 text-white px-3 py-1 text-xs font-medium" style={{ backgroundColor: 'var(--primary)' }}>
@@ -120,6 +123,9 @@ export default function InteriorPackages() {
                   alt={`${pkg.name} Interior Package`}
                   fill
                   className="object-cover"
+                  sizes="(max-width: 768px) 280px, (max-width: 1024px) 50vw, 25vw"
+                  quality={85}
+                  priority={pkg.id <= 2}
                 />
                 {pkg.popular && (
                   <div className="absolute top-4 right-4 text-white px-3 py-1 text-xs font-medium" style={{ backgroundColor: 'var(--primary)' }}>
