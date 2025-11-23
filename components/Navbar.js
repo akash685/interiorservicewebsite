@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { useState } from 'react';
 import { Menu, X, Phone } from './Icons';
 
@@ -21,21 +22,24 @@ export default function Navbar({ settings }) {
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2 text-xl font-semibold text-gray-900 hover:text-pink-600 transition-colors">
           {settings?.logo ? (
-            <img 
+            <Image 
               src={settings.logo} 
               alt={siteName} 
+              width={48}
+              height={48}
               className="h-12 w-auto object-contain"
+              priority
+              quality={90}
             />
           ) : (
-            <img 
+            <Image 
               src="/logo.png" 
               alt={siteName} 
+              width={48}
+              height={48}
               className="h-12 w-auto object-contain"
-              onError={(e) => {
-                e.target.onerror = null;
-                e.target.style.display = 'none';
-                e.target.nextSibling.style.display = 'block';
-              }}
+              priority
+              quality={90}
             />
           )}
           <span className="font-bold text-xl tracking-tight">{siteName}</span>
