@@ -3,6 +3,8 @@ import Service from '@/models/Service';
 import Location from '@/models/Location';
 import Blog from '@/models/Blog';
 
+export const dynamic = 'force-dynamic';
+
 export default async function sitemap() {
   const baseUrl = 'https://www.guptafurniturenashik.in';
 

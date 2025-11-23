@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import ContactForm from '@/components/ContactForm';
 import HeroContactForm from '@/components/HeroContactForm';
 import InteriorPackages from '@/components/InteriorPackages';
@@ -311,10 +312,13 @@ export default async function Home() {
                 {/* Service Image */}
                 <div className="h-48 bg-gray-50 flex items-center justify-center relative">
                   {service.image ? (
-                    <img 
+                    <Image 
                       src={service.image} 
                       alt={service.name}
-                      className="w-full h-full object-cover"
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                      quality={85}
                     />
                   ) : (
                     <div className="text-5xl" style={{ color: 'var(--primary)' }}>

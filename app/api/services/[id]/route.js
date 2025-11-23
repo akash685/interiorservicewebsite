@@ -40,6 +40,13 @@ export async function PUT(request, { params }) {
       return NextResponse.json({ success: false, error: 'Service not found' }, { status: 404 });
     }
     
+    // Revalidate paths
+    const { revalidatePath } = await import('next/cache');
+    revalidatePath('/admin');
+    revalidatePath('/admin/services');
+    revalidatePath('/services');
+    revalidatePath('/sitemap.xml');
+
     return NextResponse.json({ success: true, data: service });
   } catch (error) {
     return NextResponse.json({ success: false, error: error.message }, { status: 400 });
@@ -61,6 +68,13 @@ export async function DELETE(request, { params }) {
       return NextResponse.json({ success: false, error: 'Service not found' }, { status: 404 });
     }
     
+    // Revalidate paths
+    const { revalidatePath } = await import('next/cache');
+    revalidatePath('/admin');
+    revalidatePath('/admin/services');
+    revalidatePath('/services');
+    revalidatePath('/sitemap.xml');
+
     return NextResponse.json({ success: true, data: {} });
   } catch (error) {
     return NextResponse.json({ success: false, error: error.message }, { status: 500 });

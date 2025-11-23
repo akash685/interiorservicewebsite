@@ -170,10 +170,14 @@ export default async function ServicePage({ params, searchParams }) {
       <section className="relative">
         {service.image && (
           <div className="relative h-64 md:h-80 lg:h-96 xl:h-[500px] overflow-hidden">
-            <img 
+            <Image 
               src={service.image} 
               alt={service.name}
-              className="w-full h-full object-cover"
+              fill
+              className="object-cover"
+              priority
+              sizes="100vw"
+              quality={85}
             />
             <div className="absolute inset-0 bg-black bg-opacity-50"></div>
             

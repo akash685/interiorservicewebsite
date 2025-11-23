@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import Icon from './Icon';
 
@@ -27,14 +28,13 @@ export default function AdminSidebar() {
     <aside className="w-64 bg-white border-r border-gray-200 flex flex-col fixed h-full z-10">
       <div className="p-6 border-b border-gray-200">
         <Link href="/admin" className="flex items-center gap-3">
-          <img 
+          <Image 
             src="/logo.png" 
             alt="Gupta Furniture" 
+            width={40}
+            height={40}
             className="h-10 w-auto object-contain"
-            onError={(e) => {
-              e.target.style.display = 'none';
-              e.target.nextSibling.style.display = 'flex';
-            }}
+            quality={90}
           />
           <div className="hidden flex items-center gap-3">
             <div className="w-10 h-10 flex items-center justify-center text-white" style={{ backgroundColor: 'var(--primary)' }}>

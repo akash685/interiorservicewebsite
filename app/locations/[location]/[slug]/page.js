@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import HeroContactForm from '@/components/HeroContactForm';
 import Breadcrumb from '@/components/Breadcrumb';
@@ -302,10 +303,14 @@ export default async function DynamicLocationPage({ params }) {
         <section className="relative bg-gray-50">
           {service.image && (
             <div className="relative w-full h-64 md:h-80 lg:h-96 overflow-hidden bg-gray-100">
-              <img 
+              <Image 
                 src={service.image} 
                 alt={`${service.name} in ${location.name}`}
-                className="w-full h-full object-cover"
+                fill
+                className="object-cover"
+                priority
+                sizes="100vw"
+                quality={85}
               />
               {/* Title Overlay - Centered */}
               <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-40 p-8">

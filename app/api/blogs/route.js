@@ -57,6 +57,14 @@ export async function POST(request) {
     }
 
     const blog = await Blog.create(body);
+    
+    // Revalidate paths
+    const { revalidatePath } = await import('next/cache');
+    revalidatePath('/admin');
+    revalidatePath('/admin/blogs');
+    revalidatePath('/blog');
+    revalidatePath('/sitemap.xml');
+
     return NextResponse.json({ success: true, data: blog }, { status: 201 });
   } catch (error) {
     return NextResponse.json({ success: false, error: error.message }, { status: 400 });

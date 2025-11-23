@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import ContactForm from '@/components/ContactForm';
 import dbConnect from '@/lib/db';
@@ -251,10 +252,14 @@ export default async function ServiceLocationPage({ params }) {
         {/* Hero Image with Overlay */}
         {service.image && (
           <div className="relative w-full h-[500px] overflow-hidden">
-            <img 
+            <Image 
               src={service.image} 
               alt={`${service.name} in ${locationName}`}
-              className="w-full h-full object-cover"
+              fill
+              className="object-cover"
+              priority
+              sizes="100vw"
+              quality={85}
             />
             {/* Dark Overlay */}
             <div className="absolute inset-0 bg-black bg-opacity-50"></div>

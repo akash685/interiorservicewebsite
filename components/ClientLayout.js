@@ -2,6 +2,7 @@
 
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 import Navbar from '@/components/Navbar';
 
 export default function ClientLayout({ children, settings }) {
@@ -26,20 +27,24 @@ export default function ClientLayout({ children, settings }) {
             <div>
               <div className="mb-6 flex items-center gap-3">
                 {settings?.logo ? (
-                  <img 
+                  <Image 
                     src={settings.logo} 
                     alt="Gupta Furniture" 
+                    width={40}
+                    height={40}
                     className="h-10 w-auto object-contain rounded-md"
+                    loading="lazy"
+                    quality={85}
                   />
                 ) : (
-                  <img 
+                  <Image 
                     src="/logo.png" 
                     alt="Gupta Furniture" 
+                    width={40}
+                    height={40}
                     className="h-10 w-auto object-contain rounded-md"
-                    onError={(e) => {
-                      e.target.style.display = 'none';
-                      e.target.nextSibling.style.display = 'block';
-                    }}
+                    loading="lazy"
+                    quality={85}
                   />
                 )}
                 <span className="text-xl font-bold text-white tracking-tight">
