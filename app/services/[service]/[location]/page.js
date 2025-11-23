@@ -140,14 +140,13 @@ export default async function ServiceLocationPage({ params }) {
   }
   const aggregateData = calculateAggregateRating(reviewsForRating);
 
-  // Service Schema
+  // Service Schema (Product type for Rich Results)
   const serviceSchema = {
     "@context": "https://schema.org",
-    "@type": "Service",
-    "serviceType": service.serviceType || "Home Interior Design",
+    "@type": "Product",
     "name": `${service.name} in ${locationName}`,
     "description": service.description,
-    "provider": {
+    "brand": {
       "@type": "LocalBusiness",
       "name": "Gupta Furniture & Interior",
       "image": "https://www.guptafurniturenashik.in/logo.png",
@@ -172,8 +171,7 @@ export default async function ServiceLocationPage({ params }) {
         "name": locationName
       }
     },
-    "image": service.image,
-    "termsOfService": "https://www.guptafurniturenashik.in/terms",
+    "image": service.image || "https://www.guptafurniturenashik.in/hero.png",
     "url": `https://www.guptafurniturenashik.in/services/${service.slug}/${location.slug}`
   };
 
@@ -195,26 +193,34 @@ export default async function ServiceLocationPage({ params }) {
       {
         "@type": "ListItem",
         "position": 1,
-        "name": "Home",
-        "item": "https://www.guptafurniturenashik.in"
+        "item": {
+          "@id": "https://www.guptafurniturenashik.in",
+          "name": "Home"
+        }
       },
       {
         "@type": "ListItem",
         "position": 2,
-        "name": "Services",
-        "item": "https://www.guptafurniturenashik.in/services"
+        "item": {
+          "@id": "https://www.guptafurniturenashik.in/services",
+          "name": "Services"
+        }
       },
       {
         "@type": "ListItem",
         "position": 3,
-        "name": service.name,
-        "item": `https://www.guptafurniturenashik.in/services/${service.slug}`
+        "item": {
+          "@id": `https://www.guptafurniturenashik.in/services/${service.slug}`,
+          "name": service.name
+        }
       },
       {
         "@type": "ListItem",
         "position": 4,
-        "name": locationName,
-        "item": `https://www.guptafurniturenashik.in/services/${service.slug}/${location.slug}`
+        "item": {
+          "@id": `https://www.guptafurniturenashik.in/services/${service.slug}/${location.slug}`,
+          "name": locationName
+        }
       }
     ]
   };

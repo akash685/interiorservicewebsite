@@ -82,20 +82,26 @@ export default async function ServicePage({ params, searchParams }) {
       {
         "@type": "ListItem",
         "position": 1,
-        "name": "Home",
-        "item": "https://www.guptafurniturenashik.in"
+        "item": {
+          "@id": "https://www.guptafurniturenashik.in",
+          "name": "Home"
+        }
       },
       {
         "@type": "ListItem",
         "position": 2,
-        "name": "Services",
-        "item": "https://www.guptafurniturenashik.in/services"
+        "item": {
+          "@id": "https://www.guptafurniturenashik.in/services",
+          "name": "Services"
+        }
       },
       {
         "@type": "ListItem",
         "position": 3,
-        "name": service.name,
-        "item": `https://www.guptafurniturenashik.in/services/${service.slug}`
+        "item": {
+          "@id": `https://www.guptafurniturenashik.in/services/${service.slug}`,
+          "name": service.name
+        }
       }
     ]
   };
