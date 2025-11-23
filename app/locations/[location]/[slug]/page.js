@@ -4,6 +4,8 @@ import HeroContactForm from '@/components/HeroContactForm';
 import dbConnect from '@/lib/db';
 import Location from '@/models/Location';
 import Service from '@/models/Service';
+import { calculateAggregateRating } from '@/lib/reviews-utils';
+import { reviews } from '@/data/reviews';
 
 // Helper to format slug to name
 const formatName = (slug) => slug.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
@@ -128,6 +130,21 @@ export default async function DynamicLocationPage({ params }) {
   // Case 1: Slug is a Service -> Render Service Page
   const service = await Service.findOne({ slug: paramSlug }).lean();
   if (service) {
+    // Calculate aggregate rating from service reviews or location reviews
+    let reviewsForRating = [];
+    if (service.reviews && service.reviews.length > 0) {
+      // Use service-specific reviews from database
+      reviewsForRating = service.reviews.map(review => ({
+        rating: parseInt(review.ratingValue) || 5
+      }));
+    } else {
+      // Use location-specific reviews from data file
+      reviewsForRating = (reviews[location.name] || reviews["Nashik"] || []).map(review => ({
+        rating: review.rating
+      }));
+    }
+    const aggregateData = calculateAggregateRating(reviewsForRating);
+
     // Service Schema
     const serviceSchema = {
       "@context": "https://schema.org",
@@ -164,6 +181,16 @@ export default async function DynamicLocationPage({ params }) {
       "termsOfService": "https://www.guptafurniturenashik.in/terms",
       "url": `https://www.guptafurniturenashik.in/locations/${locationSlug}/${paramSlug}`
     };
+
+    if (aggregateData) {
+      serviceSchema.aggregateRating = {
+        "@type": "AggregateRating",
+        "ratingValue": aggregateData.ratingValue,
+        "ratingCount": aggregateData.ratingCount,
+        "bestRating": aggregateData.bestRating,
+        "worstRating": aggregateData.worstRating
+      };
+    }
 
     // Breadcrumb Schema
     const breadcrumbSchema = {

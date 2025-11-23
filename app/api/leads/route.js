@@ -8,11 +8,12 @@ import rateLimiter from '@/lib/rateLimit';
 // Input validation schema
 const leadSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters').max(100, 'Name too long'),
-  email: z.string().email('Invalid email address'),
-  phone: z.string().regex(/^[0-9]{10}$/, 'Phone must be 10 digits'),
+  phone: z.string().regex(/^\+91[0-9]{10}$/, 'Phone must be +91 followed by 10 digits'),
   service: z.string().optional(),
   message: z.string().max(1000, 'Message too long').optional(),
   location: z.string().optional(),
+  sublocation: z.string().optional(),
+  pageUrl: z.string().optional(),
 });
 
 export async function POST(request) {

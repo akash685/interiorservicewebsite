@@ -12,6 +12,7 @@ import Service from '@/models/Service';
 import Settings from '@/models/Settings';
 import { reviews } from '@/data/reviews';
 import { getLocationFAQs } from '@/data/faqs';
+import { calculateAggregateRating } from '@/lib/reviews-utils';
 
 export async function generateMetadata({ params }) {
   const { location: locationSlug } = await params;
@@ -43,6 +44,10 @@ export default async function LandingPage({ params }) {
   }
 
   const featuredServices = allServices;
+
+  // Get reviews for this location (fallback to Nashik if not found)
+  const locationReviews = reviews[location.name] || reviews["Nashik"] || [];
+  const aggregateData = calculateAggregateRating(locationReviews);
 
   // Organization Schema for this location
   const organizationSchema = {
@@ -85,7 +90,7 @@ export default async function LandingPage({ params }) {
         }
       }))
     },
-    "review": (reviews[location.name] || reviews["Nashik"]).map(review => ({
+    "review": locationReviews.map(review => ({
       "@type": "Review",
       "datePublished": review.datePublished,
       "reviewRating": {
@@ -100,6 +105,16 @@ export default async function LandingPage({ params }) {
       "reviewBody": review.text
     }))
   };
+
+  if (aggregateData) {
+    organizationSchema.aggregateRating = {
+      "@type": "AggregateRating",
+      "ratingValue": aggregateData.ratingValue,
+      "ratingCount": aggregateData.ratingCount,
+      "bestRating": aggregateData.bestRating,
+      "worstRating": aggregateData.worstRating
+    };
+  }
 
   // Generate location-specific FAQs
   const locationFAQs = getLocationFAQs(location.name);
@@ -139,18 +154,21 @@ export default async function LandingPage({ params }) {
   };
 
   // AggregateRating Schema
-  const aggregateRatingSchemaLanding = {
-    "@context": "https://schema.org",
-    "@type": "LocalBusiness",
-    "name": "Gupta Furniture & Interior",
-    "aggregateRating": {
-      "@type": "AggregateRating",
-      "ratingValue": "4.9",
-      "ratingCount": "524",
-      "bestRating": "5",
-      "worstRating": "1"
-    }
-  };
+  let aggregateRatingSchemaLanding = null;
+  if (aggregateData) {
+    aggregateRatingSchemaLanding = {
+      "@context": "https://schema.org",
+      "@type": "LocalBusiness",
+      "name": "Gupta Furniture & Interior",
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": aggregateData.ratingValue,
+        "ratingCount": aggregateData.ratingCount,
+        "bestRating": aggregateData.bestRating,
+        "worstRating": aggregateData.worstRating
+      }
+    };
+  }
 
   // WebSite SearchAction Schema
   const websiteSchemaLanding = {

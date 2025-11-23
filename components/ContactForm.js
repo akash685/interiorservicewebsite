@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { usePathname } from 'next/navigation';
-import { User, Phone, Check } from './Icons';
+import { User, Check } from './Icons';
 
 export default function ContactForm({ service, location, sublocation, context }) {
   const pathname = usePathname();
@@ -12,8 +12,14 @@ export default function ContactForm({ service, location, sublocation, context })
   });
   const [status, setStatus] = useState('idle'); // idle, loading, success, error
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+  const handleChange = (field, value) => {
+    if (field === 'phone') {
+      // Only allow digits and limit to 10 numbers
+      const cleaned = value.replace(/\D/g, '').slice(0, 10);
+      setFormData(prev => ({ ...prev, [field]: cleaned }));
+    } else {
+      setFormData(prev => ({ ...prev, [field]: value }));
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -28,6 +34,7 @@ export default function ContactForm({ service, location, sublocation, context })
         },
         body: JSON.stringify({
           ...formData,
+          phone: '+91' + formData.phone,
           service,
           location,
           sublocation,
@@ -48,97 +55,104 @@ export default function ContactForm({ service, location, sublocation, context })
   };
 
   return (
-    <div className="bg-white border border-gray-200 p-8">
-      <h3 className="text-2xl font-semibold mb-6 text-gray-900">
-        {context || 'Get a Free Quote'}
-      </h3>
-      
-      {status === 'success' ? (
-        <div className="p-8 bg-green-50 text-green-700 border border-green-200">
-          <div className="w-12 h-12 bg-green-100 flex items-center justify-center mx-auto mb-4">
-            <Check className="w-6 h-6 text-green-600" />
+    <div className="bg-white border border-gray-200 rounded-md shadow-sm" style={{ maxWidth: '400px' }}>
+      <div className="p-4">
+        <h3 className="text-lg font-semibold mb-4" style={{ color: 'var(--text-dark)' }}>
+          {context || 'Get a Free Quote'}
+        </h3>
+        
+        {status === 'success' ? (
+          <div className="text-center py-4">
+            <div className="w-8 h-8 mx-auto mb-3 rounded-full flex items-center justify-center" style={{ backgroundColor: 'var(--primary-light)' }}>
+              <Check className="w-4 h-4" style={{ color: 'var(--primary)' }} />
+            </div>
+            <p className="text-sm font-medium mb-1" style={{ color: 'var(--text-dark)' }}>Thank you!</p>
+            <p className="text-xs mb-3" style={{ color: 'var(--text-medium)' }}>We will call you shortly.</p>
+            <button 
+              onClick={() => setStatus('idle')}
+              className="text-xs font-medium underline hover:opacity-80 transition-opacity"
+              style={{ color: 'var(--primary)' }}
+            >
+              Send another inquiry
+            </button>
           </div>
-          <p className="text-lg font-semibold mb-2 text-center">Thank you!</p>
-          <p className="mb-4 text-center">We will call you shortly.</p>
-          <button 
-            onClick={() => setStatus('idle')}
-            className="text-sm font-medium underline hover:text-green-800 transition-colors"
-          >
-            Send another inquiry
-          </button>
-        </div>
-      ) : (
-        <form onSubmit={handleSubmit} className="space-y-5">
-          <div className="space-y-2">
-            <label className="block text-sm font-medium text-gray-700" htmlFor="name">Name</label>
-            <div className="relative">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
-                <User className="w-5 h-5" />
+        ) : (
+          <form onSubmit={handleSubmit} className="space-y-3">
+            {/* Name Field */}
+            <div>
+              <label className="block text-xs font-medium mb-1" htmlFor="name" style={{ color: 'var(--text-dark)' }}>Name</label>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-2.5 flex items-center pointer-events-none" style={{ color: 'var(--text-light)' }}>
+                  <User className="w-4 h-4" />
+                </div>
+                <input
+                  type="text"
+                  id="name"
+                  name="name"
+                  value={formData.name}
+                  onChange={(e) => handleChange('name', e.target.value)}
+                  required
+                  className="w-full pl-8 pr-3 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-1 focus:border-pink-500"
+                  placeholder="Enter your name"
+                />
               </div>
-              <input
-                type="text"
-                id="name"
-                name="name"
-                value={formData.name}
-                onChange={handleChange}
-                required
-                className="block w-full pl-10 pr-3 py-3 border border-gray-300 outline-none transition-colors"
-                style={{ '--tw-ring-color': 'var(--primary)' }}
-                placeholder="Enter your name"
-              />
             </div>
-          </div>
-          
-          <div className="space-y-2">
-            <label className="block text-sm font-medium text-gray-700" htmlFor="phone">Phone Number</label>
-            <div className="relative">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
-                <Phone className="w-5 h-5" />
+            
+            {/* Phone Field */}
+            <div>
+              <label className="block text-xs font-medium mb-1" htmlFor="phone" style={{ color: 'var(--text-dark)' }}>
+                Phone Number
+              </label>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-2.5 flex items-center pointer-events-none" style={{ color: 'var(--text-light)' }}>
+                  <span className="text-xs">🇮🇳 +91</span>
+                </div>
+                <input
+                  type="tel"
+                  id="phone"
+                  name="phone"
+                  value={formData.phone}
+                  onChange={(e) => handleChange('phone', e.target.value)}
+                  required
+                  maxLength="10"
+                  className="w-full pl-16 pr-3 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-1 focus:border-pink-500"
+                  placeholder="Enter 10-digit mobile number"
+                />
               </div>
-              <input
-                type="tel"
-                id="phone"
-                name="phone"
-                value={formData.phone}
-                onChange={handleChange}
-                required
-                className="block w-full pl-10 pr-3 py-3 border border-gray-300 outline-none transition-colors"
-                style={{ '--tw-ring-color': 'var(--primary)' }}
-                placeholder="Enter your mobile number"
-                pattern="[0-9]{10}"
-                title="Please enter a valid 10-digit mobile number"
-              />
             </div>
-          </div>
 
-          {status === 'error' && (
-            <div className="p-3 bg-red-50 text-red-600 text-sm text-center border border-red-200">
-              Something went wrong. Please try again.
-            </div>
-          )}
+            {/* Error Message */}
+            {status === 'error' && (
+              <div className="p-2 text-xs border rounded" style={{ backgroundColor: '#fef2f2', borderColor: '#fecaca' }}>
+                <p className="text-red-600">Something went wrong. Please try again.</p>
+              </div>
+            )}
 
-          <button 
-            type="submit" 
-            className="w-full text-white py-3.5 px-4 font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-            style={{ backgroundColor: 'var(--primary)' }}
-            disabled={status === 'loading'}
-          >
-            {status === 'loading' ? (
-              <span className="flex items-center justify-center gap-2">
-                <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                </svg>
-                Sending...
-              </span>
-            ) : 'Request Callback'}
-          </button>
-          
-          <p className="text-xs text-center text-gray-500">
-            *We respect your privacy. No spam.
-          </p>
-        </form>
-      )}
+            {/* Submit Button */}
+            <button 
+              type="submit" 
+              className="w-full text-white py-2 px-4 text-sm font-medium rounded transition-colors disabled:opacity-50"
+              style={{ backgroundColor: 'var(--primary)' }}
+              disabled={status === 'loading'}
+            >
+              {status === 'loading' ? (
+                <span className="flex items-center justify-center gap-2">
+                  <svg className="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                  Sending...
+                </span>
+              ) : 'Request Callback'}
+            </button>
+            
+            {/* Privacy Notice */}
+            <p className="text-xs text-center" style={{ color: 'var(--text-light)' }}>
+              *We respect your privacy. No spam.
+            </p>
+          </form>
+        )}
+      </div>
     </div>
   );
 }

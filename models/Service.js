@@ -12,14 +12,14 @@ const faqSchema = new mongoose.Schema({
 }, { _id: false });
 
 const offerSchema = new mongoose.Schema({
-  name: { type: String, required: true },
-  price: { type: String, required: true },
+  name: { type: String },
+  price: { type: String },
   description: String,
 }, { _id: false });
 
 const reviewSchema = new mongoose.Schema({
-  author: { type: String, required: true },
-  reviewBody: { type: String, required: true },
+  author: { type: String },
+  reviewBody: { type: String },
   ratingValue: { type: Number, min: 1, max: 5, default: 5 },
   datePublished: { type: Date, default: Date.now },
 }, { _id: false });

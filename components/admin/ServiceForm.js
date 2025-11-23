@@ -27,11 +27,58 @@ export default function ServiceForm({ service }) {
     setIsSubmitting(true);
 
     try {
+      // Parse offers and reviews
+      let offers = [];
+      let reviews = [];
+      
+      try {
+        offers = JSON.parse(formData.offers || '[]');
+        reviews = JSON.parse(formData.reviews || '[]');
+      } catch (parseError) {
+        alert('Invalid JSON format in offers or reviews field');
+        setIsSubmitting(false);
+        return;
+      }
+
+      // Validate offers
+      for (let i = 0; i < offers.length; i++) {
+        const offer = offers[i];
+        if (offer.name && !offer.price) {
+          alert(`Offer #${i + 1}: Price is required when name is provided`);
+          setIsSubmitting(false);
+          return;
+        }
+        if (offer.price && !offer.name) {
+          alert(`Offer #${i + 1}: Name is required when price is provided`);
+          setIsSubmitting(false);
+          return;
+        }
+      }
+
+      // Validate reviews
+      for (let i = 0; i < reviews.length; i++) {
+        const review = reviews[i];
+        if (review.author && !review.reviewBody) {
+          alert(`Review #${i + 1}: Review text is required when author is provided`);
+          setIsSubmitting(false);
+          return;
+        }
+        if (review.reviewBody && !review.author) {
+          alert(`Review #${i + 1}: Author is required when review text is provided`);
+          setIsSubmitting(false);
+          return;
+        }
+      }
+
+      // Filter out empty offers and reviews
+      offers = offers.filter(offer => offer.name && offer.price);
+      reviews = reviews.filter(review => review.author && review.reviewBody);
+
       const payload = {
         ...formData,
         keywords: formData.keywords.split(',').map(k => k.trim()).filter(Boolean),
-        offers: JSON.parse(formData.offers || '[]'),
-        reviews: JSON.parse(formData.reviews || '[]'),
+        offers,
+        reviews,
       };
 
       const url = service ? `/api/services/${service._id}` : '/api/services';
@@ -51,7 +98,7 @@ export default function ServiceForm({ service }) {
         alert(data.error || 'Failed to save service');
       }
     } catch (error) {
-      alert('Error saving service');
+      alert('Error saving service: ' + error.message);
     } finally {
       setIsSubmitting(false);
     }
